@@ -28,6 +28,7 @@ resource "google_compute_instance" "default" {
   }
 
   metadata = {
+    block-project-ssh-keys = true
     foo                                 = "bar"
   }
 
