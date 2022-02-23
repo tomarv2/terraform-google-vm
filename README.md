@@ -1,30 +1,53 @@
-[![](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-# terraform-google-vm
-Terraform module for GCP VM
+<p align="center">
+    <a href="https://github.com/tomarv2/terraform-google-vm/actions/workflows/pre-commit.yml" alt="Pre Commit">
+        <img src="https://github.com/tomarv2/terraform-google-vm/actions/workflows/pre-commit.yml/badge.svg?branch=main" /></a>
+    <a href="https://www.apache.org/licenses/LICENSE-2.0" alt="license">
+        <img src="https://img.shields.io/github/license/tomarv2/terraform-google-vm" /></a>
+    <a href="https://github.com/tomarv2/terraform-google-vm/tags" alt="GitHub tag">
+        <img src="https://img.shields.io/github/v/tag/tomarv2/terraform-google-vm" /></a>
+    <a href="https://github.com/tomarv2/terraform-google-vm/pulse" alt="Activity">
+        <img src="https://img.shields.io/github/commit-activity/m/tomarv2/terraform-google-vm" /></a>
+    <a href="https://stackoverflow.com/users/6679867/tomarv2" alt="Stack Exchange reputation">
+        <img src="https://img.shields.io/stackexchange/stackoverflow/r/6679867"></a>
+    <a href="https://twitter.com/intent/follow?screen_name=varuntomar2019" alt="follow on Twitter">
+        <img src="https://img.shields.io/twitter/follow/varuntomar2019?style=social&logo=twitter"></a>
+</p>
 
-# Versions
+# Terraform module to create Google Virtual Machine
 
-- Module tested for Terraform 0.14.
-- AWS provider version [3.57.0](https://registry.terraform.io/providers/hashicorp/google/latest)
-- `main` branch: Provider versions not pinned to keep up with Terraform releases
-- `tags` releases: Tags are pinned with versions (use latest tag in your releases)
+## Versions
 
-**NOTE:** 
+- Module tested for Terraform 1.0.1.
+- GCP provider version [4.11.0](https://registry.terraform.io/providers/hashicorp/google/latest).
+- `main` branch: Provider versions not pinned to keep up with Terraform releases.
+- `tags` releases: Tags are pinned with versions (use <a href="https://github.com/tomarv2/terraform-google-vm/tags" alt="GitHub tag">
+        <img src="https://img.shields.io/github/v/tag/tomarv2/terraform-google-vm" /></a>).
 
-- Read more on [tfremote](https://github.com/tomarv2/tfremote)
 
 ## Usage
 
-Recommended method:
+### Option 1:
 
-- Create python 3.6+ virtual environment 
+```
+terrafrom init
+terraform plan -var='teamid=tryme' -var='prjid=project1'
+terraform apply -var='teamid=tryme' -var='prjid=project1'
+terraform destroy -var='teamid=tryme' -var='prjid=project1'
+```
+**Note:** With this option please take care of remote state storage
+
+### Option 2:
+
+#### Recommended method (stores remote state in S3 using `prjid` and `teamid` to create directory structure):
+
+- Create python 3.8+ virtual environment
 ```
 python3 -m venv <venv name>
 ```
 
 - Install package:
 ```
-pip install tfremote
+pip install tfremote --upgrade
 ```
 
 - Set below environment variables:
@@ -32,55 +55,42 @@ pip install tfremote
 export TF_GCLOUD_BUCKET=<remote state bucket name>
 export TF_GCLOUD_PREFIX=<remote state bucket prefix>
 export TF_GCLOUD_CREDENTIALS=<gcp credentials.json>
-export TF_GCLOUD_CREDENTIALS=<gcp credentials.json>
-```  
-
-- Change to: 
-```
-example/custom/sample.tfvars
 ```
 
-- Change to: 
-```
-example/base 
-``` 
+- Updated `examples` directory with required values.
 
 - Run and verify the output before deploying:
 ```
-tf -cloud gcloud plan -var-file <path to .tfvars file>
+tf -c=gcloud plan -var='teamid=foo' -var='prjid=bar'
 ```
 
 - Run below to deploy:
 ```
-tf -cloud gcloud apply -var-file <path to .tfvars file>
+tf -c=gcloud apply -var='teamid=foo' -var='prjid=bar'
 ```
 
 - Run below to destroy:
 ```
-tf -cloud gcloud destroy -var-file <path to .tfvars file>
+tf -c=gcloud destroy -var='teamid=foo' -var='prjid=bar'
 ```
 
-Please refer to example directory [link](example/README.md) for references.
-## Inputs
+**NOTE:**
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| auto\_create\_subnetworks | n/a | `string` | `"true"` | no |
-| credentials | n/a | `string` | `"~/.gcloud/credentials.json"` | no |
-| delete\_default\_routes\_on\_create | n/a | `string` | `"false"` | no |
-| email | email address to be used for tagging (suggestion: use group email address) | `any` | n/a | yes |
-| gcp\_project | gcp project to use | `any` | n/a | yes |
-| mtu | n/a | `string` | `"1460"` | no |
-| prjid | (Required) Name of the project/stack e.g: mystack, nifieks, demoaci. Should not be changed after running 'tf apply' | `any` | n/a | yes |
-| routing\_mode | n/a | `string` | `"REGIONAL"` | no |
-| set\_region | n/a | `string` | `"us-west1"` | no |
-| set\_zone | set zone | `string` | `"us-west1-a"` | no |
-| teamid | (Required) Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply' | `any` | n/a | yes |
+- Read more on [tfremote](https://github.com/tomarv2/tfremote)
+---
 
-## Outputs
+### Virtual Machine
+```
+module "vm" {
+  source = "git::git@github.com:tomarv2/terraform-google-vm.git"
 
-| Name | Description |
-|------|-------------|
-| vpc\_id | vpc id |
-| vpc\_self\_link | vpc self link |
+  gcp_project         = "security-269000"
+  user_data_file_path = "user_data.sh"
+  # --------------------------------------------------
+  # Do not change the teamid, prjid once set.
+  teamid = var.teamid
+  prjid  = var.prjid
+}
+```
 
+Please refer to examples directory [link](examples) for references.

@@ -1,16 +1,16 @@
-data "template_file" "shell-script" {
+data "template_file" "shell_script" {
   template = file(var.user_data_file_path)
 }
 
 # ----------------------------------------------------
-data "template_cloudinit_config" "cloudinit-app" {
+data "template_cloudinit_config" "cloudinit_app" {
 
-  gzip = false
+  gzip          = false
   base64_encode = false
 
   part {
     content_type = "text/x-shellscript"
-    content      = data.template_file.shell-script.rendered
+    content      = data.template_file.shell_script.rendered
   }
 
 }
