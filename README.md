@@ -83,7 +83,7 @@ tf -c=gcloud destroy -var='teamid=foo' -var='prjid=bar'
 ```
 module "vm" {
   source = "git::git@github.com:tomarv2/terraform-google-vm.git"
-  
+
   user_data_file_path = "user_data.sh"
   # --------------------------------------------------
   # Do not change the teamid, prjid once set.
