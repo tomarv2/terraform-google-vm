@@ -7,3 +7,8 @@ variable "prjid" {
   description = "Name of the project/stack e.g: mystack, nifieks, demoaci. Should not be changed after running 'tf apply'"
   type        = string
 }
+
+variable "project" {
+  description = "Name of the GCP project to deploy resources"
+  type        = string
+}

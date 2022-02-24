@@ -1,3 +1,7 @@
+provider "google" {
+  project = var.project
+}
+
 module "vm" {
   source = "../../"
 
