@@ -14,12 +14,6 @@ variable "inst_type" {
   type        = string
 }
 
-variable "set_zone" {
-  default     = "us-west2-a"
-  description = "set zone"
-  type        = string
-}
-
 variable "image_id" {
   description = "image id to use"
   default     = "debian-cloud/debian-10"
