@@ -25,5 +25,3 @@ variable "user_data_file_path" {
   default     = "scripts/userdata.sh"
   type        = string
 }
-
-variable "zone" {}

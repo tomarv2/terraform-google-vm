@@ -1,8 +1,5 @@
-data "google_compute_regions" "available" {
-}
-
 provider "google" {
-  region = data.google_compute_regions.available.names[count.index]
+  region = "us-central1"
 }
 
 module "vm" {
