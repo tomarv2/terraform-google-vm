@@ -1,8 +1,8 @@
 resource "google_compute_instance" "default" {
   name                      = "${var.teamid}-${var.prjid}"
   machine_type              = var.inst_type
+  zone                      = var.zone
   allow_stopping_for_update = "true"
-  zone = var.zone
   tags                      = ["owner", "rumse"]
 
   boot_disk {
